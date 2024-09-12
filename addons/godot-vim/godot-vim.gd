@@ -1023,7 +1023,7 @@ class VimSession:
 
         visual_start_pos = ed.curr_position()
         if line_wise:
-            ed.select(visual_start_pos.line, 0, visual_start_pos.line + 1, 0)
+            ed.select(visual_start_pos.line, 0, visual_start_pos.line, INF_COL)
         else:
             ed.select_by_pos2(visual_start_pos, visual_start_pos.right())
 
@@ -1533,13 +1533,10 @@ class CommandDispatcher:
                     start = new_pos.from # In some cases (text object), we need to override the start position
                     new_pos = new_pos.to
                 ed.jump_to(new_pos.line, new_pos.column)
-                if start.compares_to(new_pos) > 0: # swap
-                    start = new_pos
-                    new_pos = vim_session.visual_start_pos
                 if vim_session.visual_line:
-                    ed.select(start.line, 0, new_pos.line + 1, 0)
+                    ed.select(start.line, 0, new_pos.line, 0)
                 else:
-                    ed.select_by_pos2(start, new_pos.right())
+                    ed.select_by_pos2(start, new_pos)
             elif input_state.operator.is_empty():  # Normal mode motion only
                 ed.jump_to(new_pos.line, new_pos.column)
             else:  # Normal mode operator motion

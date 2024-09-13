@@ -2,3 +2,6 @@
 .godot/
 project.godot
 *.import
+
+# macOS
+*.DS_Store
